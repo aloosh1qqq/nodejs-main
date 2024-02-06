@@ -7,7 +7,6 @@ const errors = require("./middleware/error");
 const helmet = require('helmet');
 const compreesion = require('compression');
 
-
 const mongoose = require('mongoose');
 
 
