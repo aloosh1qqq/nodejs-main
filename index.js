@@ -7,8 +7,7 @@ const errors = require("./middleware/error");
 const helmet = require('helmet');
 const compreesion = require('compression');
 
-// const MongoDBStore = require('connect-mongodb-session')(session);
-const session = require('express-session');
+
 const mongoose = require('mongoose');
 
 
