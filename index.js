@@ -1,60 +1,75 @@
-const express = require('express');
-const req = require('express/lib/request');
+// IMPORTS FROM PACKAGES
+const express = require("express");
+const mongoose = require("mongoose");
+const adminRouter = require("./routes/admin");
+const admin = require("./routes/admin.router");
+// const cors = require('cors');
+
+
+// const allowedOrigins = ['http://localhost:3000', 'https://10.0.2.2:3000', 'http://127.0.0.1:3000'];
+// const options = cors.CorsOptions = {
+//     origin: allowedOrigins
+// };
+
+
+
+// IMPORTS FROM OTHER FILES
+const authRouter = require("./routes/auth");
+const productRouter = require("./routes/product");
+const userRouter = require("./routes/user");
+
+// INIT
+const PORT = process.env.PORT || 3000;
 const app = express();
-const monogoose = require('mongoose');
-const { MONGO_DB_CONFIG, MONGO_DB_CONGIG } = require("./config/app.config");
-const errors = require("./middleware/error");
-const helmet = require('helmet');
-const compreesion = require('compression');
+const DB =
+    "mongodb+srv://ali:hple1901whp@ecommerce.357qh.mongodb.net/?retryWrites=true&w=majority";
 
-const mongoose = require('mongoose');
+// mongodb+srv://ali:hple1901whp@ecommerce.357qh.mongodb.net/?retryWrites=true&w=majority
+// mongodb://localhost:27017/amazonDBs
 
 
-
-const MONGODB_URI = `mongodb+srv://ali:ali@cluster0-ntrwp.mongodb.net`;
-const MONGODB_URI2 = `mongodb+srv://ali:hple1901whp@ecommerce.357qh.mongodb.net/?retryWrites=true&w=majority`;
-
-// const store = new MongoDBStore({
-//     uri: MONGODB_URI,
-//     collection: 'sessions'
+// middleware
+// app.use(cors(options));
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     next();
 // });
 
-// monogoose.Promise = global.Promise;
-// monogoose.connect(MONGO_DB_CONGIG.DB, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// }).then(
-//     () => {
-//         console.log("Database Connected");
-//     },
-//     (error) => {
-//         console.log("Database cann't be connected: " + error);
-//     }
-// )
-
-
-app.use(helmet());
-app.use(compreesion());
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
-app.use("/api", require("./routes/app.rout"));
-app.use(errors.errorHandler);
+app.use(authRouter);
+app.use(adminRouter);
+app.use(productRouter);
+app.use(userRouter);
+app.use("/admin", admin);
 
+
+const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+    autoIndex: false, // Don't build indexes
+    maxPoolSize: 10, // Maintain up to 10 socket connections
+    serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+    family: 4 // Use IPv4, skip trying IPv6
+}
+
+// Connections
 mongoose
-    .connect(MONGODB_URI2)
-    .then(result => {
-        app.listen(process.env.PORT || 3000);
+    .connect(DB,options)
+    .then(() => {
+        console.log("Connection Successful");
     })
-    .catch(err => {
-        console.log(err);
-    }).then(
-        () => {
-            console.log("Database Connected && app.listen "+(process.env.PORT || 3000));
-        },
-        (error) => {
-            console.log("Database cann't be connected: " + error);
-        })
+    .catch((e) => {
+        console.log(e);
+    });
 
-// app.listen(process.env.port || 4000, function() {
-//     console.log("Ready to Go!");
-// });
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`connected at port ${PORT}`);
+});
