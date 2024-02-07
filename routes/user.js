@@ -120,7 +120,7 @@ userRouter.get("/api/orders/me", auth, async(req, res) => {
 
 userRouter.get("/api/user/me", async(req, res) => {
     try {
-        // { _id: req.headers.id }
+        { _id: req.headers.id }
         const user = await User.find();
         res.json({ user: user });
     } catch (e) {
