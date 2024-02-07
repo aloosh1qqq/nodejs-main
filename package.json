@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "20.11.0"
+  },
   "scripts": {
     "start": "node ./index.js",
     "dev": "nodemon ./index.js"
@@ -10,9 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "admin-bro": "",
-    "admin-bro-expressjs": "",
-    "admin-bro-mongoose": "",
+   
     "bcryptjs": "",
     "cookie-parser": "",
     "cors": "",

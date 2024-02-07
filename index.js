@@ -1,8 +1,8 @@
 // IMPORTS FROM PACKAGES
 const express = require("express");
 const mongoose = require("mongoose");
-const adminRouter = require("./routes/admin");
-const admin = require("./routes/admin.router");
+// const adminRouter = require("./routes/admin");
+// const admin = require("./routes/admin.router");
 // const cors = require('cors');
 
 
@@ -43,10 +43,9 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(authRouter);
-app.use(adminRouter);
+
 app.use(productRouter);
 app.use(userRouter);
-app.use("/admin", admin);
 
 
 const options = {
