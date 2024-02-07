@@ -45,7 +45,7 @@ app.use(express.json());
 app.use(authRouter);
 
 app.use(productRouter);
-app.use(userRouter);
+// app.use(userRouter);
 
 
 const options = {
